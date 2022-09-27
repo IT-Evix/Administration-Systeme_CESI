@@ -1,0 +1,222 @@
+Prosit 1 Write-Up
+
+
+## Contexte 
+
+L’ancien administrateur système de l’entreprise n’a pas laissé d’infos sur le SI de l'entreprise, et donc un état des lieux est à effectuer de toute urgence 
+
+ 
+
+## Mots clés
+
+Powershell : PowerShell est une solution multiplateforme d’automatisation des tâches, composée d’un interpréteur de commandes (shell), d’un langage de script et d’un framework de gestion de la configuration. PowerShell s’exécute sur Windows, Linux et macOS.
+
+AD : Active Directory est un ensemble de services, stocké similairement à une base de données, qui permettent de mettre en lien les utilisateurs avec les ressources réseau dont ils ont besoin pour mener à bien leurs missions.
+
+Sécurité ANSSI : L’agence Nationale de la Sécurité des Systèmes d’Information (ANSSI) est une organisation gouvernementale française rattachée au secrétaire général de la défense et de la sécurité nationale (SGDSN), ce dernier étant chargé de conseiller le Premier ministre dans l’exercice de ses fonctions en matière de défense et de sécurité nationale. L’ANSSI est chargée des questions de cybersécurité en France.
+
+ERP : Un système ERP (Enterprise resource planning) est un type de logiciel que les entreprises utilisent pour gérer leurs activités quotidiennes telles que la comptabilité, les achats, la gestion de projets, la gestion des risques et la conformité, ainsi que les opérations de supply chain.
+
+WSUS : Windows Server Update Services - Il s'agit d'un service permettant de distribuer les mises à jour pour Windows et d'autres applications Microsoft sur les différents ordinateurs fonctionnant sous Windows au sein d'un parc informatique.
+
+Kanban : la méthode Kanban visait à améliorer la production en se basant sur le juste-à-temps et sur des processus évolutifs. Aujourd'hui, elle est à la fois une méthode de gestion de projet et un outil, guidée par deux principes : le visuel et le temps-réel.
+
+Keepass : Keepass est un gestionnaire de mot de passe permettant de sauvegarder un ensemble de mots de passe dans une base de données chiffrée sous la forme d'un seul fichier.
+
+Système de management de la qualité : /
+
+ 
+
+## Pb :  
+
+ 
+
+Comment obtenir des informations sur le SI via des scripts powershells ? 
+
+Comment analyser le SI et mieux l’organiser ? (pas le pb) 
+
+ 
+
+## Généralisation :  
+
+Powershell 
+
+Notions essentielles  Système d’information  
+
+Troubleshooting sur windows 
+
+Notions Active Directory 
+
+Notions sécurité et confidentialité 
+
+ 
+## Livrables : 
+
+Script powershell 
+
+Cartographie (comprenant schéma réseau et rapport technique) du SI 
+
+ 
+
+## Contraintes :  
+
+- pas d’informations sur le SI 
+
+- SI (workshop) 
+
+- obligé d’utiliser un script  
+
+ 
+
+## Pistes de solutions : 
+
+Utiliser Nmap pour avoir la liste des ports … 
+
+Injections de commandes powershell ? 
+
+Différence SI et infrastructure 
+
+Qu’est ce qui est impliqué dans un SI ? 
+
+Toutes les entreprises ont-elles le même SI ?(spoiler non) 
+
+Ou sont hébergés les serveurs d’une entreprise ? 
+
+ 
+
+## Plan d’action : 
+
+- S’informer sur le SI, -s’informer sur la sécurité sur le site de l’ANSSI 
+
+- Faire les scripts 
+
+- Cartographie du SI (avec les éléments que l’on va découvrir) : 
+
+-schéma réseau 
+
+-faire le rapport 
+
+- Rapport d’étonnement, proposer des améliorations   
+
+
+## Résolution 
+
+
+Ici, nous allons simuler un environnement d'un SI d'entreprise limité à un LAN comportant un server hyper v et un poste client car on ne nous fourni aucun environnement pour résoudre le prosit.
+
+On peut donc créer le schéma suivant (voir schéma 1)
+
+Dans le cas correspondant au contexte du prosit, on réaliserait le schéma suite à différents scan de réseau notamment avec Nmap, Wireshark, ...
+
+Avec Nmap on pourrait tester des commandes comme :
+
+Scan basique d'une machine client ou host
+	>nmap IP/hostname
+#exemple
+#	>nmap 1.1.1.1 
+#	>nmap hostname.com
+##############################################################
+Nmap ping scan : Moyen de detecter les machines sur n'importe quel réseau
+	>nmap -sp IP/Submask 
+#exemple
+#	>nmap -sp 192.168.5.0/24
+##############################################################
+Scan des ports spécifiques ou des ranges de port sur un remote serveur
+	>nmap -p 1-65535 localhost
+(Ici scan de tous les ports de 1 à 65535 pour notre localhost de notre machine.)
+
+Pour des ports spécifiques : 
+	>nmap -p 80,443 localhost
+##############################################################
+Scan plusieurs adresses IP
+	>nmap 1.1.1.1 8.8.8.8
+(Ici scan 1.1.1.1 puis 8.8.8.8)
+##############################################################
+Scan des IPs consecutives 
+	>nmap 1.1.1.1-4
+(Ici cela scan à la suite l'IP 1.1.1.1 ; 1.1.1.2 ; 1.1.1.3 ; 1.1.1.4 )
+#############################################################
+Scan toutes les IPs d'un réseau 
+	>nmap 8.8.8.*
+############################################################
+Scan des ports les plus courants
+	>nmap --top-ports [number of ports] [IP]
+###########################################################
+Scan de détection d'OS
+	>nmap -A -T4 hostname/IP
+###########################################################
+Scan des services et version de daemon utilisés 
+	>nmap -sV hostname/IP
+##########################################################
+Scan des protocols TCP et UDP 
+	>nmap -sT hostname/IP
+	>nmap -sU hostname/IP
+#########################################################
+Scan de malwares classique sur des remote hosts
+	>nmap -sV --script=http-malware-host hostname/IP
+#########################################################
+
+
+Avec Wireshark :
+
+>lancer la capture sur le réseau correspondant puis l'analyser à l'aide de filtre ainsi que regarder les échanges (ou conversation) entre machine et le contenu échanger (requete http, TCP, ...)
+
+
+
+
+
+Après aux vues de ce qui est attendu, on suppose qu'il serait intéressant d'intégré PowerShell même si les méthodes précédentes se suffisent amplement.
+
+Donc voici quelques scripts / commandes en PowerShell qui nous servirait si on voit la situation du point de vue d'un admin sys du SI d'une entreprise comportant un active directory.
+
+On se place toujours dans le contexte de détection et de la collecte d'information :
+
+Dans un premier temps on pense à chercher des informations sur les utilisateurs présents dans l'active directory :
+
+On effectue : 
+
+#>Get-ADUser -Filter *
+
+ce qui peut prendre un certain temps si jamais y'a beaucoup d'utilisateurs
+
+On peut aussi chercher selon des filtres comme par exemple le filtre selon les unités d'organisation (OU) : 
+
+// Mais qu'est-ce qu'une OU ? Une unité organisationnelle (OU) ou unité d'organisation est un conteneur dans un domaine Microsoft Active Directory qui peut contenir des utilisateurs, des groupes et des ordinateurs.\\
+
+#>Get-ADUser -Filter * -SearchBase "CN=[common name],OU=[unité d'organisation],DC=[Domaine component],..." -Server Hostname/IP
+
+Le filtre par propriété comme récupérer les adresses email :
+
+#>Get-ADUser -Filter * -SearchBase "CN=[common name],OU=[unité d'organisation],DC=[Domaine component],..." -Properties EmailAddress | Format-Table Name,EmailAddress
+
+
+Cependant toutes ces informations nous sont données par la première commande mais surtout elles sont données comme résultat directement dans le terminal.
+Il serait plus intéressant de posséder ces résultats dans d'autres types de fichier plus exploitables comme csv pour cela on rajoute à la fin de notre commande :
+
+#>Export-Csv -Path "C:\Temp\Users_Disabled.csv" -Encoding Default -NoTypeInformation
+#exemple:
+#>Get-ADUser -Filter {Enabled -eq $False} -Properties EmailAddress | `Select-Object AccountName, Name, EmailAddress | `Export-Csv -Path "C:\Temp\Users_Disabled.csv" -Encoding Default `-NoTypeInformation
+#exporter dans un fichier CSV « Users_Disabled.csv » les comptes désactivés en intégrant trois propriétés : AccountName, Name, EmailAddress.
+
+On peut également en tant qu'admin avoir accès aux logs d'erreur que l'on peut consulter,par exemple, entre deux dates définies :
+
+#>$Begin = Get-Date -Date '1/17/2019 08:00:00'
+#>$End = Get-Date -Date '1/17/2019 17:00:00'
+#>Get-EventLog -LogName System -EntryType Error -After $Begin -Before $End 
+
+
+
+
+Bref l'utilisation de Powershell pour de la détection de SI n'est pas la solution la plus optimale car elle requiert dans la plupart des cas d'être administrateur et même si tel est le cas l'utilité de 
+PowerShell est placée en second plan face à des outils tels que nmap.
+
+Cependant PowerShell devient plus utile dans le cadre d'un active directory où l'execution de commandes ou de scripts d'automatisation pour récupérer des informations, les créer, ou les modifier sont
+essentiels pour un administrateur système et réseau.
+
+
+
+Dans l'exemple du schéma on a les informations suivantes :
+	- machine 1-> windows server 2022 -> Ip 192.168.1.1/24
+	- machine 2-> windows server 2022 -> IP 192.168.1.2/24
+	- machine 3-> Windows 10 client -> IP 192.168.1.100/24
+On invente différents renseignements que l'on pourrait trouver à l'aide de commande nmap que l'on renseigne sur le schéma.
