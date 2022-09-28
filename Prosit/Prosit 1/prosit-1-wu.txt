@@ -177,7 +177,7 @@ On effectue :
 
 #>Get-ADUser -Filter *
 
-ce qui peut prendre un certain temps si jamais y'a beaucoup d'utilisateurs
+ce qui peut prendre un certain temps si jamais y'a beaucoup d'utilisateurs car cette méthode affiche toutes les propriétés de chaque utilisateur
 
 On peut aussi chercher selon des filtres comme par exemple le filtre selon les unités d'organisation (OU) : 
 
