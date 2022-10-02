@@ -1,0 +1,157 @@
+Premières questions
+
+Vous avez remarqué pendant l’installation plusieurs termes.
+Question
+
+# Quels est le rôle obligatoire pour faire fonctionner AD DS ?
+
+--> Les AD DS (Active Directory Domain Services) constituent les fonctions essentielles d'Active Directory pour gérer les utilisateurs et les ordinateurs et pour permettre aux administrateurs
+système d'organiser les données en hiérarchies logiques.
+
+# A quoi correspondent les niveaux fonctionnels ?
+
+--> Les niveaux fonctionnels déterminent les capacités de domaine ou de forêt Active Directory Domain Services (AD DS). Ils déterminent également quels systèmes d'exploitation Windows Server vous pouvez
+exécuter sur des contrôleurs de domaine dans le domaine ou la forêt.
+
+# Comment s’appelle la base de données AD DS ?
+
+--> La base de données d'Active Directory consiste en un unique fichier nommé ntds.
+
+# Que contient le dossier SYSVOL ?
+
+--> Le dossier sysvol stocke les fichiers publics d'un domaine, qui sont répliqués sur chaque contrôleur de domaine. 
+
+
+Création d’objets AD DS
+
+
+# Peut-on avoir une solution de secours si on efface par mégarde un objet AD ?
+
+-->  Oui il  faut installer / activer la corbeille d'acive directory puis on se rend dans Centre d’administration Active Directory, puis on clique sur le domaine et on accède au dossier Deleted Objets.
+ Là une liste d'objets supprimés s'affiche et on peut les restaurer avec un simple click droit et restaurer, en choisissant dans quelle OU rétablir l'objet sélectionné.
+ En powershell la commande pour restaurer des objets suprimés est : Get-ADObject -Filter {displayName -eq "Nom de l'objet"} -IncludeDeletedObjects | Restore-ADObject
+
+Dans le centre d’administration Active Directory :
+
+Créer une OU « Administratif », dans celle-ci un groupe « Administratif » et deux utilisateurs « Michel » et « Bernard » liés à celui-ci.
+
+En bas, à droite, déplier l’historique de commande PowerShell.
+
+# Que voyez-vous ?
+
+--> Le script powershell corespondant aux modifications apportées à l'active directory.
+
+
+Sur Windows Server, nous pouvons créer des dossiers partagés.
+
+Créer un dossier « IT » qu’il faudra partager avec le groupe « IT ».
+
+Créer un dossier « Administratif », il faudra partager celui-ci avec le groupe « Administratif ». En plus de ceci, partager ce dossier avec « Michel », cette manipulation fait doublon mais nous montrera une chose importante.
+
+
+Effacer maintenant l’utilisateur « Michel » et redémarrer le serveur.
+
+# Que remarquez-vous à présent sur les droits du partage ?
+
+--> On remarque qu'il a toujours les droits sur le partage c'est pourquoi il faut ajouter un second lecteur réseau avec l'action "Supprimer" et créer un ciblage inverse.
+
+
+GPO
+
+Créer une stratégie de groupe afin d’avoir un lecteur réseau pour chaque groupe.
+Question
+
+-Les utilisateurs du groupe « IT » devront avoir un lecteur réseau I:/ qui pointe sur le dossier « IT »
+
+-Les utilisateurs du groupe « Administratif » devront avoir un lecteur réseau Z:/ qui pointe sur le dossier « Administratif »
+
+
+
+Tester ensuite les GPO en vous connectant sur des utilisateurs différents.
+
+# Que faut-il faire dans les configurations réseau pour pouvoir intégrer le domaine ?
+
+--> Pour faire partie du domaine il faut que l'administrateur enregistre dans l'active directory soit l'utilisateur (fonctionnement par session), soit la machine de l'utilisateur pour que celle ci est accès 
+ au domaine
+
+
+# Pourquoi n’utilisons pas un Windows 10 famille ?
+
+Windows Famille ne permet pas de rejoindre un réseau comportant un active directory, donc on ne l'utilise pas par manque de services au sein d'une entreprise.
+Et windows ca pue donc utilisez Linux braves gens.
+
+
+Gestion du DNS
+
+Aller dans le gestionnaire DNS et configurer une zone de recherche inverse.
+Question
+
+# A quoi sert une zone de recherche inverse ?
+
+--> A faire l'inverse d'un DNS à savoir traduire des noms d'hotes en IP, utile si l'on souhaite configurer des réseaux avec les noms de machines à la place des IPs.
+
+
+Gestion des fichiers
+
+Il faudra installer un nouveau rôle dans Windows Server : le gestionnaire de ressources du serveur de fichier.
+
+
+Question
+
+Avec celui-ci, configurer un quota de 5 Go pour les dossiers partagés et l’interdiction des fichiers vidéo et audio.
+Pour aller plus loin : mise en place d’un contrôleur de domaine secondaire
+
+Installer une troisième VM avec un OS Windows Serveur 2022 et configurer celle-ci en un contrôleur de domaine secondaire.
+
+Question
+
+# Que synchronise un contrôleur de domaine secondaire ?
+
+--> La réplication des contrôleurs de domaine. De nos jours, il est inévitable d'avoir au minimum deux contrôleurs de domaine pour assurer la disponibilité et la continuité de service des services d'annuaire.
+De plus, cela permet d'assurer la pérennité de la base d'annuaire qui est très précieuse.
+
+Question
+
+# Peut-on voir avec une commande la réplication entre contrôleur de domaine ?
+
+--> Oui, à l'aide des commandes suivantes : 
+
+>Repadmin /replsummary
+
+L'opération « /replsummary » résume rapidement l'état de la réplication et l’intégrité relative d'une forêt.
+
+>Repadmin /Queue
+
+Vérifier les demandes de réplication entrante qui sont mises en file d'attente.
+
+>Repadmin /Showrepl
+
+Vérifier l’état de la réplication
+
+>Repadmin /syncall
+
+Synchroniser la réplication entre les partenaires de la réplication
+
+>Repadmin /KCC
+
+Forcer le vérificateur de la cohérence des données à recalculer la topologie
+
+>Repadmin /replicate
+
+Forcer la réplication
+
+
+
+Question
+
+
+# Peut-on voir les rôles FMSO ? Peut-on les répartir sur les serveurs ?
+
+--> On peut consulter les roles FSMO en executant cette commande
+
+>Get-ADDomain [DomainName] | Format-Table PDCEmulator,RIDMaster, InfrastructureMaster,[rolesFSMO]
+
+On peut les répartir en tant qu'administrateur du SI en allant dans notre AD dans 'Utilisateurs et Ordinateurs dans l'AD' avec un click droit sur notre domaine et on selectionne 'Maitres d'opérations' 
+et on choisi les roles FSMO à répartir.
+
+On peut consulter et répartir ces roles FSMO également en ligne de commandes grace à l'outil ntdsutil.

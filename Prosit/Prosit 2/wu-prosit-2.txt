@@ -1,0 +1,287 @@
+# Prosit retour 2
+
+# Contexte 
+
+Notre patron retrouve un mail. On a la liste des tâches à faire ainsi que l’explication du réseau. Différents collègues se sont plaints de problèmes informatiques. On cherche à améliorer et résoudre les problèmes. 
+
+# Problématique 
+
+    Comment résoudre les problèmes des utilisateurs, à partir du mail de l’informaticien ? 
+
+    Comment faire évoluer le SI et mettre en place des bonnes pratiques ? 
+
+# Contraintes 
+
+    2 Domaines/Débits différents (Abstergo et R&D) 
+
+    Avoir le même logo sur tous les ordinateurs 
+
+    Changer le paradigme 
+
+# Livrables 
+
+    Guide / Plan d’action pour corriger et améliorer le SI 
+
+    Cartographie du SI 
+   
+# Plan d’action 
+
+    Définir les mots clés 
+
+    Modifier le paradigme 
+
+    Ecrire le plan d’action 
+
+    Réalisation du plan d’action 
+
+# Mots clés 
+
+SID : Un identificateur de sécurité (SID) est un identifiant unique et incontestable avec une longueur variable utilisé pour pointer ou identifier un mandataire (un utilisateur, un groupe d'utilisateurs ou un principal de sécurité).  
+
+DICP : Chacun de ces 4 critères représente des fondamentaux notamment pour assurer la continuité de la communication et de la diffusion des informations confidentielles.
+	Disponibilité(Garantir le fonctionnement des outils pour la continuité des services aux utilisateurs),
+	Intégrité (Mise à disposition de données de qualité dans les temps et espaces prévus),
+	Confidentialité (Offrir un niveau satisfaisante d'accès et de préservation des données sensibles) , 
+	Preuve ( Garantir la traçabilité suffisante pour tout contrôle et administration de la preuve).
+
+FSMO : les rôles FSMO permettent de limiter la modification de certaines données internes à l’annuaire Active Directory selon un certain modèle de 5 roles : Maitre d'attribution des noms de domaines (il
+est unique au sein d’une forêt et attribue les noms de domaine),Controleur de schéma (il est unique au sein d’une forêt et gère la structure du schéma), Maitre RID (il est unique au sein d’un domaine et
+attribue des blocs de RID aux contrôleurs de domaine pour assurer que les SID des objets soient unique), Maitre d'infrastructure (il est unique au sein d’un domaine et doit gérer les références d’objets
+au sein du domaine), Emulateur PDC (il est unique au sein d’un domaine et assure diverses missions liées à la sécurité et par défaut il joue le rôle de serveur de temps pour l’ensemble du domaine).
+
+Domaine : un domaine est une entité logique vue comme une enveloppe étiquetée. Il reflète le plus souvent une organisation hiérarchique dans une entreprise. Cependant,cette definition varie selon si l'on
+parle d'active directory ou de DNS, car pour un DNS cela fait référence à la traduction de noms de domaine Internet en adresse IP ou autres enregistrements. 
+
+Contrôleur de domaine : Un contrôleur de domaine est un serveur qui répond aux demandes d'authentification et contrôle les utilisateurs des réseaux informatiques. 
+
+Paradigm : manière de voir les choses 
+
+RODC : Le RODC (Read Only Domain Controller) consiste en un serveur ayant le rôle de contrôleur de domaine. Ce serveur possède seulement des droits de lecture seule sur la base de données. 
+Il est donc impossible d'effectuer des modifications depuis ce serveur. 
+
+Domaine / Arbre /foret : 
+
+Domaine : Un domaine est entité logique (administrative) Active Directory au sein de laquelle des fonctionnalités et caractériques sont partagés. Un domaine héberge des utilisateurs, ordinateurs dans lequel 
+des paramètres de stratégies sont définis.  
+Arbre : Un arbre est représenté par un ensemble de domaine qui partage le même espace de nom. Un arbre est constitué d’un domaine racine parent de sous-domaine dans un espace de nom contigu et hiérarchique.
+Chaque (sous-) domaine est une entité administrative qui a ses propres contrôleurs de domaine avec des utilisateurs, ordinateurs liés au domaine dont il est membre.
+Foret : Une forêt et un regroupement de plusieurs domaines qui partage le même schéma et configuration de partition. Une forêt peut être constituée de plusieurs arbres qui ne partagent pas le même espace 
+de nom. 
+
+AAA : Les protocoles AAA (Authentication, Authorization, Accounting - Authentification, Autorisation et Traçabilité), qui a été développé par Cisco, ont été créés pour faire face à ces défis. 
+L’architecture AAA permet aux utilisateurs d’accéder aux périphériques en réseau qui leur ont été attribués et protège le réseau contre les accès non autorisés.
+
+PKI : Une infrastructure à clés publiques ou infrastructure de gestion de clés ou encore Public Key Infrastructure, est un ensemble de composants physiques, de procédures humaines et de logiciels destiné à 
+gérer les clés publiques des utilisateurs d'un système. 
+0
+Relation d'apporbation : La relation d’approbation entre deux forets / domaines Active Directory  est un lien de confiance qui permet à des utilisateurs authentifiés d’accéder à des ressources d’un autre 
+domaine.
+Une relation d’approbation peut-être :
+
+    Unidirectionnelle : l’accès aux ressources n’est disponible que dans un sens (A) -> (B).
+    Bidirectionnelle : l’accès aux ressources est disponible dans les deux sens (A) <-> (B).
+    Transitive : si (A) et (B) ont une relation d’approbation transitive, si (B) approuve un domaine (C) celui-ci sera approuvé dans (A).  
+
+Niveau fonctionnel: Un niveau fonctionnel détermine les fonctionnalités des services de domaine Active Directory qui sont disponibles dans un domaine ou une forêt.
+Le niveau fonctionnel permet de limiter les fonctionnalités de l’annuaire au niveau actuel afin d’assurer la compatibilité avec les plus anciennes versions des contrôleurs de domaine.
+
+
+# Généralisation 
+
+    Active directory 
+
+    Gérer un parc informatique depuis un ordinateur 
+
+    Construction d’un SI 
+
+    Sécurité du SI 
+
+# Pistes de solution 
+
+    Revoir la politique des mots de passe (PKI et chiffrement). 
+
+    Liaison entre les 2 active directory. 
+
+    Redéfinir les droits d’accès. 
+
+    Regrouper les 2 domaines en un seul. 
+
+    Mettre en place le SID. 
+
+    Bonne pratique sécurité. 
+
+    Redondance de l’AD. 
+
+    Script powershell pour la sauvegarde de l’annuaire 
+
+    Tunnel entre les 2 sites. 
+
+
+# Résolution
+
+
+Intéressons-nous dans un premier temps aux pleintes des utilisateurs spécifiés dans le sujet.
+
+
+"Notre réseau devient très lent, cela arrive plusieurs fois par mois."
+
+Cette première remarque ne nous aide pas beaucoup. En effet celà peut être une conséquence d'une multitude de sources potentielles. Cependant on peut se réferrer au sujet où l'on peut lire :
+
+'Contrairement au siège qui dispose d’une fibre optique de 100 Mbits, le site R&D dispose d’une ADSL de 6 Mbits.'
+
+Donc une des premières solutions à laquelle on peut penser est de voir avec le FAI pour passer l'intégralité du SI sous fibre optique.
+
+Dans un second temps on se penche sur des potentielles limitations de réseaux et de bande passante par utilisateur. Par exemple nous pouvons interdire l'accès à certains sites webs ou plateformes qui
+monopoliseraient le réseau et qui n'ont pas lieu d'être utilisés comme par exemple twitch, netflix ou d'autre plateforme de jeu tel qu'epic games, steam ... 
+
+Enfin on considère également une potentielle attaque informatique sur le réseau comme un DDoS etc ... Pour pallier à cela on peut mettre en place des règles de pare-feu qui bloqueront ce type d'attaque en
+limitant un nombre de requete à la seconde entrant dans le réseau ou même en bloquant les requetes dont les IP sources ne font pas parties de celles des machines de l'entreprise etc...
+
+
+
+"J’ai perdu plusieurs fichiers en deux mois, je perds beaucoup de temps à cause de l’informatique."
+
+Là encore cette affirmation est très peu précise, celà peu provenir de l'utilisateur qui manquerait d'attention et qui perdrait de lui même ses fichiers. Dans ce cas, on peut proposer une formation pour
+expliquer comment gérer ses documents ainsi que les fonctionnalités de bases d'un ordinateur avec un OS similaire au sien. 
+
+Dans le cas où celà proviendrai du coté serveur, il s'agit alors de revoir d'urgences le paramétrage des GPO et des droits utilisateurs, ce qui signifie alors que la responsabilité de ces erreurs proviendrai
+de l'administrateur du système.
+
+
+"Il y a six mois, un collaborateur a branché une clé USB sur son poste, un virus sur la clé avait infecté plusieurs postes."
+
+Cette fois ci c'est très clair : il faut de façon urgente organiser au minimum une réunion de tout le personel pour les mettre au courant des bonnes pratiques de sécurité et si nécessaire organiser une 
+formation pour les utilisateurs concernés
+
+
+"C’est devenu le Far West sur le serveur de fichiers : beaucoup d’utilisateurs stockent des films et des musiques sur celui-ci."
+
+C'est pas sensé se produire et si ce n'est pas déjà stipulé dans la charte informatique de l'entreprise il est urgent de le mettre en place. Cependant l'administrateur système est encore en faute car il est 
+sensé avoir mis en place des filtres de fichiers pour les utilisateurs ainsi que gérer les droits de mofication, lecture et exécution sur l'ensemble des ressources des serveurs. 
+
+
+"j’aimerais donner une bonne impression aux visiteurs et avoir un fond d’écran avec le logo de l’entreprise sur tous les postes."_ le boss
+
+Il s'agit encore de configuration de GPO pour être plus précis : 
+
+"Configuration utilisateur" > "Modèles d'administration" > "Bureau" > "Bureau">"Papier peint du Bureau">[fichier jpg]>
+Cochez l'option "Activé" puis mettez le chemin complet vers votre fond d'écran dans la zone "Nom du papier peint"
+Et sélectionnez le style du fond d'écran dans "Style du papier peint"
+Cliquez sur "OK"
+
+
+
+
+Bon plus personne réclame ! (pour l'instant)
+
+
+Profitons en pour mettre en place ele plan d'action pour chaque tache à venir prochainement à savoir 'Reste à faire : Répartir les FSMO ? RODC, sous-domaine ou relation d’approbation ? SID ? Revoir politique 
+des mots de passe ? Sauvegarde de l’annuaire ?' comme spécifiéé dans le sujet.
+
+
+On a d'abord "Répartir les roles FSMO".
+
+Comme spéficié dans le workshop 
+
+--> On peut consulter les roles FSMO en executant cette commande
+
+>Get-ADDomain [DomainName] | Format-Table PDCEmulator,RIDMaster, InfrastructureMaster,[rolesFSMO]
+
+On peut les répartir en tant qu'administrateur du SI en allant dans notre AD dans 'Utilisateurs et Ordinateurs dans l'AD' avec un click droit sur notre domaine et on selectionne 'Maitres d'opérations'
+et on choisi les roles FSMO à répartir.
+
+On peut consulter et répartir ces roles FSMO également en ligne de commandes grace à l'outil ntdsutil
+
+Ok donc voyons comment les répartir avec ntdsutil : 
+
+On trouve rapidement les commandes suivantes :
+
+#>transfer RID master
+#>transfer schema master
+#>transfer infrastructure master
+#>transfer domain naming master
+#>transfer pdc
+
+On vérifie ensuite en faisant :
+
+#>NETDOM QUERY /Domain:<votre-domaine> FSMO
+
+
+
+On a ensuite "RODC, sous-domaine ou relation d’approbation ?"
+
+Pour éclaircir cette situation, on doit bien comprendre la question ici, qui est de toute évidence mal formulée ... Je suppose qu'on nous demande de faire une comparaison / différence entre un RODC, 
+un sous domaine et une relation d'approbation.
+
+Pour celà je ramène au déinition vue au dessus dans les mots clefs. Pour ce qui est de l'intégration je pense que le tutoriels sur le site suivant explique très bien comment implémenter des relations 
+d'approbation entre domaine etc...
+lien vers tutoriel : https://rdr-it.com/active-directory-relation-approbation-entre-deux-forets-domaines/
+
+
+"SID ?" 
+
+Une fois de plus il est difficile d'interpréter quoi que ce soit avec une simple appélation. On peut considérer cette courte question comme une demande d'implémentation des SIDs qui est très liée avec les 
+roles FSMO et la création d'utilisateurs.
+Donc à mon avis, pour répondre à cette attente on définie ce qu'est un SID dans un cas général car cette notion dépend trop d'autres roles et actions au sein de l'AD pour avoir des détails d'implémentation 
+sur notre AD 
+
+Dans Windows, les SID (Security Identifier) sont des identifiants uniques alphanumériques qui identifient chaque système, utilisateur ou objet (groupe) dans un réseau ou sur un PC.
+Certains SID sont identiques sur tous les systèmes et dans la Base de Registre les profils utilisateurs sont identifiés par leur SID.
+Le principe est assez similaire dans AD tous les objets disposent d’un SID unique. Le SID est composé d’un security principal domain SID comme préfixe et d’un RID (Relative Identifier) comme suffixe.
+Les RIDs sont gérés dans chaque domaine Active Directory par le maître RID. Il s’agit d’un Contrôleur de Domaine qui alloue une plage de RIDs pour chaque contrôleur de domaine se trouvant dans le même domaine 
+Active Directory. Par défaut, une plage RID attribuée contient 500 RIDs.
+Les SIDs sont stockés dans deux attributs:
+
+    objectSid: Ceci est le security Principal SID qui est généré pendant la création de l’objet
+    sIDHistory: Ces SIDs sont ceux migrés des anciens domaines (SID History)
+
+
+
+"Revoir politique des mots de passe ?"
+
+On a ici une demande claire qui est de revoir une politique de mot de passe. Pour son implémentation, il suffit de construire une nouvelle politique de mots de passe adatée à l'entreprise et la faire 
+validée par un RSSI qui dira si cela est accepté par le conseil d'administration ou non...
+
+On peut penser à une plotique simple et sécurisée qui se conforme généralement à toute entreprise tel que :
+
+	- Pour tout mot de passe des utilisateurs concernant l'entreprise : comporter au minimum 12 caractères avec des chiffres, lettres, majuscules, minuscules et des caractères spéciaux, à ne pas 
+stocker dans les fichiers de son compte utilisateur, à ne surtout pas réutiliser ou partager etc...
+
+
+
+"Sauvegarde de l’annuaire ?"
+
+En effet, cette question semble pertinente si on la découpe en deux parties qui sont d'abord 'Est-ce nécessaire ? Si oui quels standards sur lesquels se baser ?' et ensuite 'Comment faire ces seuvegardes ?'
+
+Ok, reprenons notre première partie : 'Est-ce nécessaire ? Si oui quels standards sur lesquels se baser ?'
+
+La réponse coule de source ! Bien évidemment, que ce soit en cas d'erreur, de pertes ou de vol d'informations les sauvegares jouent un roles essentiels.
+
+Maintenant il est question de standard de sauvegarde comme par exemple au bout de combien de temps faire une sauvgarde ? Quoi sauvegarder ? Et où le stocker ?
+
+Répondons à ces questions une après l'autres : 
+
+Au bout de combien de temps faire une sauvgarde ?
+
+La fréquence de sauvegarde recommandée pour l’Active Directory n’est pas supérieure à 60 jours. La raison de cela est l’une des spécificités de la gestion des bases de données de l’Active Directory – les 
+objets AD tombstone.
+Lorsqu’un objet de l’annuaire est supprimé (ce qui signifie que la plupart des attributs de l’objet, ou tous, sont supprimés), il est marqué comme un objet tombstone et n’est pas physiquement supprimé avant 
+l’expiration de la durée de vie tombstone, qui est de 60 jours exactement.
+
+Quoi sauvegarder ?
+
+Vous devriez sauvegarder au moins un de vos contrôleurs de domaine si vous en avez plusieurs afin de garantir une restauration partielle de vos données en cas de panne matérielle ou logicielle. De même, si 
+des rôles FSMO (Flexible Single Master Operation) sont installés sur l’un de vos contrôleurs, vous devez le sauvegarder en priorité. De cette façon, si vous perdez tous vos contrôleurs, vous pourrez récupérer 
+l’un d’entre eux – celui avec FSMO – qui sera considéré comme « primaire », et après cela, si vous déployez un autre contrôleur – vous pourrez, essentiellement, copier tous les changements du contrôleur de 
+domaine « primaire » vers le « secondaire ».
+
+Et où le stocker ?
+
+Plusieurs réponses sont possibles ici, mais la plus logique à mes yeux est un serveur de stockage dans un autre réseau sécurisé. Ainsi on a la possibilité de stocker de nombreuses informations de manière 
+sécuriser sur un réseau séparé.
+
+Comment faire ces sauvegardes ?
+
+Dans le cadre de notre prosit, nous travaillons sur Windows Server, on a donc des services natifs de sauvegardes à notre portée comme par exemple Windows Server Backup.
+WSB est doté d’une interface et de la possibilité de créer des sauvegardes incrémentielles à l’aide de VSS (Microsoft Volume Shadow Copy Service). Les données qui ont été sauvegardées sont 
+enregistrées au format VHD. Après les avoir sauvegardées, nous serions capables de monter ces disques VHD sur une machine – virtuelle ou physique – pour accéder aux données que nous avons sauvegardées.
