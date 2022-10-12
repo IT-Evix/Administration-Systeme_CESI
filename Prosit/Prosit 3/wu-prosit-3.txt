@@ -1,0 +1,145 @@
+# Analyse du contexte 
+
+L’entreprise est susceptible à des attaques et avec des documents trouvés récemment il s’agit d’améliorer la sécurité de l’entreprise. 
+
+
+# Mots clés  
+
+ 
+
+ACL : Access Control List (ACL) désigne un système permettant de faire une gestion des droits d'accès aux fichiers et designe également une liste des adresses et ports autorisés ou interdits par un pare-feu 
+
+DMZ : une zone démilitarisée (ou DMZ) fait référence à un sous-réseau qui héberge les services exposés et accessibles de l'extérieur d'une entreprise. Elle agit comme une zone tampon avec les réseaux 
+	non sécurisés tels qu'Internet.
+
+Proxy : Un serveur proxy joue le rôle de passerelle entre Internet et les utilisateurs. C'est donc un serveur intermédiaire qui sépare les utilisateurs, des sites Web sur lesquels ils naviguent.  
+
+Filtrage : Terme rattaché au fonctionnement d'un firewall qui signifie un l'action de tri entre les informations qui traversent l'identité en question; ce qui implique un reflux d'informations si celles 
+ci ne correspondent pas aux filtres mis en place
+
+Par-feu : Un Firewall est un dispositif informatique qui permet le passage sélectif des flux d’information entre deux réseaux et qui neutralise les tentatives d’accès qui sont en désaccord avec la politique 
+de sécurité en appliquée 
+
+Vecteur d’attaque :  Un vecteur d'attaque, ou vecteur de menace, est un moyen pour les attaquants de pénétrer dans un réseau ou un système.
+
+IPS :  Un système de prévention des intrusions (IPS) est une forme de sécurité de réseau qui sert à détecter et prévenir les menaces identifiées. Les systèmes de prévention des intrusions surveillent en 
+permanence votre réseau, recherchant les éventuels actes de malveillance et capturent des informations à leur sujet.
+
+IDS :On appelle IDS (Intrusion Detection System) un mécanisme écoutant le trafic réseau de manière furtive afin de repérer des activités anormales ou suspectes et permettant ainsi d'avoir une action de 
+prévention sur les risques d'intrusion. 
+
+Zone : Une zone (réseau) est une entité qui aide lors d'une représentation d'une structure de réseau. Cela permet de router les informations de manière plus efficace.   
+
+Malwares : Un logiciel malveillant est un programme développé dans le but de nuire à un système informatique, sans le consentement de l'utilisateur dont l'ordinateur est infecté.
+
+SIEM : Le logiciel SIEM collecte et regroupe les données de log générées au niveau de l’ensemble de l’infrastructure IT de l’entreprise. Les analyses du SIEM génèrent et envoient des alertes, des tableaux de 
+bord et des rapports en temps réel à plusieurs services critiques liés à l’activité et à la gestion de l’entreprise.  
+
+Management : Le management des systèmes d'information (l'informatique de gestion ou plutôt le management de la performance) est une discipline qui met en scène les sciences de gestion et du management 
+représentant un groupe de techniques et d'outils (comme du monitoring) qui assurent la gestion et la sécurité de données. 
+
+UTM : UTM est l'initiale pour Urchin Tracking Module, il s'agit d'un système de tracking des URL utilisé dans les campagnes de marketing digital qui permet d'identifier et de suivre le trafic provenant des 
+campagnes dans l'interface Google Analytics 
+
+SOC : Un SOC est une installation abritant une unité de sécurité chargée de surveiller et d’analyser en permanence le dispositif de sécurité d’une entreprise. L’objectif du SOC est de détecter, analyser et 
+intervenir en cas d’incidents lié à la cybersécurité. Pour cela, il utilise une combinaison de dispositifs technologiques ainsi qu’un ensemble de processus pour détecter et remonter le moindre incident 
+afin que les équipes puissent réagir rapidement. 
+
+
+# Problématique 
+
+    Comment en utilisant les notes de l’ancien informaticien trouver une solution aux attaques. 
+
+# Livrables 
+
+    Plan d’action pour implémenter les mesures de sécurité 
+
+    Liste des attaques courantes que subit l’entreprise 
+
+    Management de ces solutions 
+
+ 
+
+# Généralisation 
+
+    Mettre en place la sécurité  
+
+    Apprendre les grandes lignes des attaques malveillantes  
+
+    Pare feu  
+
+# Pistes de solutions 
+
+    Utilisation des ACL 
+
+    Bac à sable -> test  
+
+    Prévention contre les attaques  
+
+    AAA  
+
+    VPN 
+
+ 
+
+# Plan d’action 
+
+    Utiliser du filtrage 
+
+    Tester sur Sandbox 
+
+    Mise en place d’une DMZ 
+
+    Implémenter des méthodes de management pour la sécurité 
+
+    Répertorier les attaques possibles  
+
+    Configurer un pare feu 
+
+    Implémenter Proxy  
+
+
+
+# Résolution 
+
+
+	
+Concernant l'utilisation du filtrage on s'interesse à l'installation d'un pare-feu qui effectura des règles de filtrage du trafic entre le WAN et notre DMZ et LAN. On utilise ici pfsense, un parefeu 
+gratuit et où l'on peut personnaliser les règles de filtrage, et mettre en place .
+
+Voir exemple règle autorisation ping WAN depuis internet
+Voir exempe accès internet LAN
+
+Pour ajouter certains services comme l'ajout d'un filtrage d'URL, l'ajout d'un proxy ou l'ajout d'un anti-virus, on utilisera les paquets squid. 
+
+    Squid : C'est une application proxy de cache haute performance.
+    SquidGuard : Il permet d'effectuer du filtrage d'URL.
+    LightSquid : C'est un outil de supervision pour les 2 services précédent au travers d'un page web.
+
+L'objectif de la mise en place de ce proxy transparent, c'est de permettre l'accélération de la navigation Internet grâce à la mise en cache, mais aussi le filtrage des sites Internet, sans aucune 
+configuration sur les postes clients. 
+
+Pour l'implémentation : 
+https://www.it-connect.fr/proxy-transparent-mise-en-place-de-squid-sur-pfsense/
+https://alexandre-dosreis.me/articles/firewall-pfsense#IV-Ajouts-de-services
+
+
+
+Pour créer une vm sandbox sur windows nous avons besoin de windows 10 pro et d'activer la feature Windows Sandbox dans les pramètres windows ainsi que mettre la vm qui servira de sandbaox dans un cluster 
+pour plus de sécurité.
+
+Pour la mise en place d'une DMZ, nous suivons la procédure du workshop, on utilise un windows server avec les roles IIS Web configuré dans un réseau séparé du LAN.
+
+
+Liste d'attaques courantes 
+
+    Attaques par déni de service (DoS) et par déni de service distribué (DDoS)
+    Attaque de l’homme au milieu (MitM)
+    Hameçonnage (phishing) et harponnage (spear phishing)
+    Téléchargement furtif (drive-by download)
+    Cassage de mot de passe
+    Injection SQL
+    Cross-site scripting (XSS)
+    Écoute clandestine
+    Attaque des anniversaires
+    Logiciel malveillant (malware)

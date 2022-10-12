@@ -1,0 +1,155 @@
+
+# Analyse du contexte
+
+Nous avons une usurpation d’identité d’un salarié dans le SI. Donc une mise en place de sécurité au niveau des mots de passe est nécessaire.
+# Mots clés
+
+- Signature de mot de passe : empreinte chiffrée lors d'une authentifiacation d'un mot de passe. 
+
+- Cryptographie : En général, la cryptographie est une technique d'écriture où un message chiffré est écrit à l'aide de codes secrets ou de clés de chiffrement. La cryptographie est principalement utilisée 
+pour protéger un message considéré comme confidentiel.
+
+- Hachage : Une fonction de hachage est une fonction qui, à partir d'une donnée fournie en entrée, calcule une empreinte numérique servant à identifier rapidement la donnée initiale, au même titre qu'une 
+signature pour identifier une personne. Les fonctions de hachage sont utilisées en informatique et en cryptographie notamment pour reconnaître rapidement des fichiers ou des mots de passe.  
+
+- RSA : RSA est un système cryptographique, ou cryptosystème, pour le chiffrement à clé publique. Il est souvent utilisé pour la sécurisation des données confidentielles, en particulier lorsqu'elles sont 
+transmises sur un réseau peu sûr comme Internet.
+
+- Chiffrement de hill: Il consiste à chiffrer le message en substituant les lettres du message, non plus lettre à lettre, mais par groupe de lettres. Il permet ainsi de rendre plus difficile le cassage du 
+code par observation des fréquences. 
+
+- MD5 : Le MD5, pour Message Digest 5, est une fonction de hachage cryptographique qui permet d'obtenir l'empreinte numérique d'un fichier. Si l'algorithme MD5 présente un intérêt historique important, il est 
+aujourd'hui considéré comme dépassé et absolument impropre à toute utilisation en cryptographie ou en sécurité.
+
+- Fonction de salage : L’idée du salage est d’ajouter au mot de passe de l’utilisateur ou aux informations visées, une chaîne aléatoire (le sel) qui va compliquer l’utilisation des rainbow tables sur le hash 
+en multipliant le nombre de hash possibles pour un même mot de passe.
+
+-Rainbow tables : Une rainbow table est, en cryptanalyse, une structure de données créée en 2003 par Philippe Oechslin de l'EPFL pour retrouver un mot de passe à partir de son empreinte.
+
+# Problématique
+
+Comment améliorer la sécurité du SI en évitant toute infiltration ? Comment retrouver le mot de passe originel à partir de sa signature ? 
+
+# Contraintes
+
+Nous n’avons pas la clé de chiffrement-On ne connait pas le chiffrement utilisé et la signature. On a deux phrases illisibles à déchiffrer
+
+# Livrables
+Le mot de passe originel
+Ce que signifie la phrase illisible
+Un programme en C pour décrypter le mot de passe
+Comparaison entre les différents algorithmes de cryptographi
+
+#Généralisation
+
+Étudier les notions de cryptographie, les algorithmes de hashage.
+
+# Pistes de solutions
+
+Comprendre la différence entre cryptage et chiffrement(Mathis W.)
+Partir du hashage pour le chiffrement(Pierre M.)
+Se renseigner sur les clés symétriques et asymétriques(Valentin)
+Chiffrement Cesar(Pierre M.)
+Chiffrement Hill (Valentin)
+La phrase «6d1523b39a9904958cada602dc52c7d4» est en MD5(Maxime D.)
+AES / RSA(Valentin)
+
+# Plan d’action
+
+Se renseigner sur les différents modes de cryptographie qui existent
+Se renseigner sur le Hash MD5
+Créer le programme permettant de déchiffer les phrases 
+Casserle Hash MD5
+Comparatif des différentes méthode de chiffrement (ouverture sur des solutions futures)
+
+
+
+# Résolution 
+
+Il existe un grand nombre d'algorithmes pour faire de la cryptographie / cryptananlyse. Cependant, la majorité de ces algorithmes utilisent un système de clefs pour pouvoir chiffrer et déchiffrer des 
+informations. Le système de clefs utilisés dépend des algorithmes étudiés mais on peut citer deux utilisations de ces clefs. On a les algos utilisant un système de clefs symétriques : il s'agit de l'
+utilisation d'une clef unique que l'on doit partager avec le destinataire pour qu'il puisse déchiffrer le message ; à l'inverse on a les algos utilisant un systeme de clefs asymétrique : il s'agit d'un 
+fonctionnement avec une paire de clef (clef publique et clef privée. Pour appliquer un chiffrement avec une paire de clefs, il faut que l'utilisateur possède la clef publique du destinataire pour chiffrer
+son message grace à cette dernière, une fois le message envoyé et recu par le destinataire il utilise sa clef privée, qui elle est secrète et ne doit pas être partagée, pour déchiffrer le message.
+
+Présentation d'un outil : Hashcat. 
+
+https://hashcat.net/wiki/doku.php?id=example_hashes
+
+pour la phrase un coup de César on a "le hachage vous permettrait dassurer la confidentialite simplement".
+le md5 pas possible car salé.
+
+le salage  présent sur le hash md5 ne permet pas dans les délais impartis de retrouver l'information hachée.
+
+
+# le code 
+
+Cassage de md5 en Powershell :
+
+    new-alias new New-Object
+    # MD5 Crypto provider
+        $MD5CP=[System.Security.Cryptography.MD5CryptoServiceProvider]::new()
+     
+    # liste des caractères à utiliser pour la force brute, ici a-z
+        $chrlist=97..122
+     
+    # le hash à trouver
+        $hash=""
+     
+    # Fonction récursive, traite les chiffres en colonne
+     
+    function ManageCols([int]$number){
+        $secretStr=[System.Text.Encoding]::ASCII.GetString($secret)
+        # Si une colonne est 'pleine', on la vide et incrémente celle de gauche
+        if ($secret[$number] -eq $chrlist[-1] -or
+        $secretStr -eq $endstr)
+            {
+                if ($number -eq 0){"FIN DE LA BOUCLE";break}
+                $secret[$number] = $chrlist[0];
+                ManageCols($number-1);
+               
+            }
+         # Sinon on l'incrémente
+         else{
+            # Affiche la chaine en cours
+            if ($count%$refresh -eq 0){$secretstr};
+             $curChar=$secret[$number]
+            $secret[$number]=$chrlist[($chrlist.IndexOf([int]($curChar)))+1]
+            }
+    }
+     
+    # Fonction qui utilise dotNet pout calculer le hash MD5 d'une chaine
+    function ComputeString([string]$s)
+    {
+        $result=$MD5CP.ComputeHash($secret)
+        $result=[System.BitConverter]::ToString($result).replace('-','')
+        if ($result -eq $hash){
+        cls;
+        "* * * Hash trouvé * * * : $([System.Text.Encoding]::ASCII.GetString($secret))"
+        $result
+        exit(0)
+        }
+    }
+    # La boucle principale
+     
+    # nous allons traiter uen chaine longue de 1 à 6 caractères
+    1..6|%{
+        # longueur max de la chaîne
+        $length=$_
+        # un compteur modulo $refresh pour l'affichage du traitement en cours
+        $count=0
+        $refresh=10000
+     
+     
+        # Initialisation de la chaine
+        [byte[]]$secret=new byte[] $length
+        0..($length-1)|%{$secret[$_]=$chrlist[$_]}
+     
+        while ($true)
+        {
+            ManageCols($length-1);
+            ComputeString($secret)
+            $count++
+        }
+    }
+
