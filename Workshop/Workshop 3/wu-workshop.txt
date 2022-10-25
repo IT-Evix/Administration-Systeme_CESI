@@ -1,0 +1,18 @@
+Ex 1 
+
+# Donnez une explication du choix de la valeur 65537 pour exposant public par défaut.
+
+La clé publique se compose du module n et d'un exposant public, e, en principe défini à 65537, car il s'agit d'un nombre premier pas trop élevé. Il n'est pas nécessaire que le nombre e soit un nombre 
+premier secrètement choisi, car la clé publique est partagée avec tout le monde.
+
+
+Exercice 2
+
+# Avec la commande cat observez le contenu du chier maCle.pem. Utilisez à nouveau la commande rsa pour visualiser le contenu de la clé.
+
+
+Exercice 3.
+
+# Question 1. Notez le contenu du chier maClePublique.pem. Remarquez les marqueurs de début et de fin.
+
+# Question 2. Avec la commande rsa visualisez la clé publique. Attention vous devez préciser l'option-pubin, puisque seule la partie publique gure dans le chier maClePublique.pem.

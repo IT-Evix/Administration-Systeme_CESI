@@ -1,0 +1,145 @@
+# Contexte : 
+
+Une machine est saturée, abstergo n’a plus accès a certaines informations. 
+
+# Mot clés : 
+
+    Monitoring : Le monitoring informatique est aussi appelé surveillance informatique. Son but est de s'assurer de la disponibilité et de la performance des infrastructures, des équipements, des logiciels 
+et des processus supportant les données.
+
+    Cloud : Le cloud permet aux utilisateurs d'accéder aux mêmes fichiers et aux mêmes applications à partir de presque n'importe quel appareil, car les processus informatiques et le stockage ont lieu sur 
+des serveurs dans un datacenter et non localement sur la machine utilisateur.
+
+    Log : En informatique, un fichier log permet de stocker un historique des événements survenus sur un serveur, un ordinateur ou une application. Ce "journal" présenté sous la forme d'un fichier, ou 
+équivalent, liste et horodate tout ce qui se passe. 
+
+    Protocole de supervision : La supervision avec  protocole SNMP : Simple Network Management Protocol. C'est le protocole de communication et de gestion simplifiée du réseau. C'est le SNMP qui permet aux 
+administrateurs de contrôler et de gérer (diagnostiquer) tous les éléments actifs du réseau. 
+
+    SNMP : Le protocole SNMP permet à une application de gestion de demander des informations provenant d'une unité gérée. L'unité gérée contient un logiciel qui envoie et reçoit des informations SNMP. 
+Ce module logiciel est généralement appelé agent SNMP. 
+
+    MIB : Un fichier MIB est un fichier qui contient les informations de gestion correspondant à un appareil précis. On utilise le protocole SNMP pour assurer cette fonction.
+
+    Métrologie : La métrologie fait partie intégrante de la supervision. Elle désigne globalement la science de la mesure qui s'applique dans de nombreux domaines et notamment dans les réseaux informatiques. 
+Au-delà de la simple mesure, la métrologie s'applique à garantir la mesure et à l'interpréter.
+
+    Centreon : Centreon est une solution de supervision des applications, qui fournit une vue d'ensemble, en modélisant les services IT critiques pour les métiers incluant applications, middlewares ou composants
+d'infrastructure. Grâce à une vision globale, Centreon permet d'aligner l'IT sur les objectifs d'entreprise
+
+    Syslog : Syslog est l'acronyme de System Logging Protocol et désigne un protocole standard qui sert à envoyer des fichiers du journal système ou des messages ayant trait à des événements à un serveur 
+dédié appelé serveur syslog.
+
+    WMI :WMI est un système de gestion interne de Windows qui prend en charge la surveillance et le contrôle de ressources systèmes via un ensemble d'interfaces. Il fournit un modèle cohérent et organisé 
+logiquement des états de Windows. 
+
+    Solarwinds Orion : SolarWinds Orion Platform est une plate- forme puissante et évolutive de gestion et de surveillance de l'infrastructure qui simplifie la gestion informatique des environnements sur 
+site, hybrides et SaaS, à partir d'un seul écran. 
+
+# Problématique : 
+
+    Comment éviter de saturer les disques systèmes  
+
+    Comment mettre en place un système de logs 
+
+    Comment superviser de manière globale le SI 
+
+# Contraintes : 
+
+    La taille de la mémoire  
+
+    On est la seule personne qualifiée  
+
+    Monitoring d’un outil distant 
+
+# Généralisation : 
+
+    Apprendre à superviser un SI 
+
+    Apprendre à gérer les logs 
+
+    Solution monitoring 
+
+    Apprendre à utiliser Centreon 
+
+    Apprendre à utiliser le protocole SNMP 
+
+# Livrables : 
+
+    Explication sur la supervision d’un SI 
+
+    Dashboard de monitoring 
+
+    Fournir une solution qui permet de régler le problème de mémoire 
+
+# Pistes de solution : 
+
+    Centreon représente le Dashboard de supervision du SI 
+
+    Centreon est une VM /un OS a part pour mettre en place le monitoring 
+
+    Mettre un dashboad admin et un dashboard utilisateur 
+
+    Orion permet de superviser le réseau / détecter les problèmes  
+
+    Mettre en place du ticketering 
+
+    SMNP sert à récupérer des infos sur le SI 
+
+    Utiliser NetConf 
+
+    Se renseigner sur le buffer overflow 
+
+# Plan d’action : 
+
+    Apprendre à utiliser Centreon (wk) 
+
+    Trouver une solution pour faire de la place dans les logs (programme pour limiter les choses inutiles) 
+
+    Déployer notre système de monitoring 
+
+
+
+
+# Résolution 
+
+
+ - Introduction au buffer overflow
+
+Les attaques par « débordement de tampon » (en anglais « Buffer overflow », parfois également appelées dépassement de tampon) ont pour principe l'exécution de code arbitraire par un programme en lui 
+envoyant plus de données qu'il n'est censé en recevoir.
+
+En effet, les programmes acceptant des données en entrée, passées en paramètre, les stockent temporairement dans une zone de la mémoire appelée tampon (en anglais buffer). Or, certaines fonctions de lecture, 
+telles que les fonctions strcpy() du langage C, ne gèrent pas ce type de débordement et provoquent un plantage de l'application pouvant aboutir à l'exécution du code arbitraire et ainsi donner un accès au 
+système.
+
+La mise en oeuvre de ce type d'attaque est très compliquée car elle demande une connaissance fine de l'architecture des programmes et des processeurs. Néanmoins, il existe de nombreux exploits capable 
+d'automatiser ce type d'attaque et la rendant à la portée de quasi-néophytes.
+
+ - Principe de fonctionnement
+
+Le principe de fonctionnement d'un débordement de tampon est fortement lié à l'architecture du processeur sur lequel l'application vulnérable est exécutée.
+
+Les données saisies dans une application sont stockée en mémoire vive dans une zone appelée tampon. Un programme correctement conçu doit prévoir une taille maximale pour les données en entrées et vérifier 
+que les données saisies ne dépassent pas cette valeur.
+
+Les instructions et les données d'un programme en cours d'exécution sont provisoirement stockées en mémoire de manière contigûe dans une zone appelée pile (en anglais stack). Les données situées après le 
+tampon contiennent ainsi une adresse de retour (appelée pointeur d'instruction) permettant au programme de continuer son exécution. Si la taille des données est supérieure à la taille du tampon, l'adresse de 
+retour est alors écrasée et le programme lira une adresse mémoire invalide provoquant une faute de segmentation (en anglais segmentation fault) de l'application.
+
+Un pirate ayant de bonnes connaissance techniques peut s'assurer que l'adresse mémoire écrasé corresponde à une adresse réelle, par exemple située dans le tampon lui-même. Ainsi, en écrivant des instructions 
+dans le tampon (code arbitraire), il lui est simple de l'exécuter.
+
+Il est ainsi possible d'inclure dans le tampon des instructions ouvrant un interprêteur de commande (en anglais shell) et permettant au pirate de prendre la main sur le système. Ce code arbitraire permettant 
+d'exécuter l'interprêteur de commande est appelé shellcode.
+
+ - Se protéger d'un Buffer overflow
+
+Pour se protéger de ce type d'attaque, il est nécessaire de développer des applications à l'aide de langages de programmation évolués, assurant une gestion fine de la mémoire allouée ou bien à l'aide de 
+langage de bas niveau en utilisant des bibliothèques de fonctions sécurisées (par exemple les fonctions strncpy()).
+
+Des bulletins d'alerte sont régulièrement publiés, annonçant la vulnérabilité de certaines applications à des attaques par débordement de tampon. Suite à ces bulletins d'alerte, les éditeurs des logiciels 
+touchés par la vulnérabilité publient généralement des correctifs (patchs) permettant de corriger la faille. Tout administrateur système et réseau se doit de se tenir informé des alertes de sécurité et 
+d'appliquer le plus rapidement possible les correctifs. 
+
+*************************************************************************************************************************************************************************************************************

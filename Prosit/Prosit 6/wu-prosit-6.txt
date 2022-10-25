@@ -1,0 +1,201 @@
+# Contexte : 
+
+Un stagiaire a installé docker et Animus souhaite donc l’installer chez eux. 
+
+# Mots clés : 
+
+Docker :  Docker permet d'embarquer une application dans un ou plusieurs containers logiciels qui pourra s'exécuter sur n'importe quel serveur machine, qu'il soit physique ou virtuel. Docker fonctionne sous 
+Linux comme Windows Server. C'est une technologie qui a pour but de faciliter les déploiements d'application, et la gestion du dimensionnement de l'infrastructure sous-jacente.
+
+Conteneurisation : Il s'agit d'un type de virtualisation utilisé au niveau des applications. Le principe repose sur la création de plusieurs espaces utilisateurs isolés les uns des autres sur un noyau 
+commun. On utilise alors le terme de « conteneur » pour désigner une telle instance.
+
+Serveur RDP : Remote Desktop Protocol est un protocole qui permet à un utilisateur de se connecter sur un serveur exécutant Microsoft Terminal Services. Des clients existent pour la quasi-totalité des 
+versions de Windows, et pour d'autres systèmes d'exploitation, comme les systèmes GNU/Linux 
+
+Hyper V : il permet à un serveur physique de devenir Hyperviseur et ainsi gérer et héberger des machines virtuelles communément appelées VM.
+
+Virtualisation : La virtualisation est une technologie qui vous permet de créer plusieurs environnements simulés ou ressources dédiées à partir d'un seul système physique.
+
+ERP : Un système ERP (Enterprise resource planning) est un type de logiciel que les entreprises utilisent pour gérer leurs activités quotidiennes telles que la comptabilité, les achats, la gestion de projets, 
+la gestion des risques et la conformité, ainsi que les opérations de supply chain.
+
+Externaliser un Linux  
+
+Ansible : Ansible est un logiciel Open Source qui permet de gérer finement une infrastructure informatique, les déploiements automatisés multi-environnements, les ordinateurs et les configurations systèmes.
+
+# Problématiques : 
+
+Comment implémenter la conteneurisation dans le SI d’Abstergo ? 
+
+Comment optimiser l’infrastructure avec Docker ? 
+
+Quel outil choisir entre Docker et Hyper V ? 
+
+# Contraintes : 
+
+Nombre de serveur précis à gérer  
+
+Utiliser Docker 
+
+La Base de données ERP est sous Oracle 
+
+Taille de la BDD ERP 
+
+Appli qui devra se connecter à l’AD 
+
+ 
+
+# Généralisation : 
+
+Apprendre à utiliser les Dockers 
+
+Apprendre à remplacer un serveur Web par un ERP 
+
+Différence entre conteneurisation et virtualisation 
+
+Hyper V ou non 
+
+
+# Livrables : 
+
+Schéma explicatif des modèles sur la virtualisation et la conteneurisation 
+
+Mise en place image Docker 
+
+Un conteneur 
+
+
+# Pistes de solutions : 
+
+Utilisation d’Ansible pour l’automatisation (Pierre L) 
+
+Conteneurisation c’est de l’applicatif et Virtualisation c’est de l’OS (Maxime) 
+
+Conteneurisation donne un gain d’espace et du transport (Valentin) 
+
+Virtualisation donne un gain de sécurité (Valentin) 
+
+Pourquoi Oracle est problématique (Pierre M) 
+
+Avantage et inconvénient de l’externalisation de Linux (Edwin) 
+
+Positionnement du disque par rapport à la conteneurisation (Valentin) 
+
+# Plan d’action : 
+
+Regarder les ressources  
+
+Faire le schéma de la conteneurisation  
+
+Ecrire en place un plan d’action pour le déploiement de la solution 
+
+Implémenter conteneur  
+
+Tester Docker et justifier son usage 
+
+Déploiement avec Ansible 
+
+
+# Résolution
+
+Alors que la virtualisation est essentielle pour la distribution de plusieurs systèmes d'exploitation sur un seul serveur, la conteneurisation est plus flexible et plus granulaire. Elle vise à découper 
+les systèmes d'exploitation en différents morceaux que vous pouvez utiliser plus efficacement.
+
+Voir schéma
+
+À la base, la virtualisation permet à chaque machine virtuelle VMware de disposer de son propre système d’exploitation avec ses fichiers binaires, ses pilotes et ses bibliothèques. Les machines virtuelles 
+sont alors isolées au niveau des matérielles (RAM/Disque/CPU) et l’accès aux ressources se fait uniquement via un hyperviseur. Bien que cette technologie ait fait ses preuves, elle présente le risque de créer 
+des doublons entre les machines virtuelles au risque d’occuper plus de mémoire que ce qui est nécessaire. Le nombre de machines virtuelles hébergées sur un serveur est alors limité.
+
+À contrario, les applications partagent un seul système d’exploitation dans le cadre de la conteneurisation informatique. L’isolation est effectuée au niveau de ce dernier où les ressources restent 
+accessibles via le moteur de conteneurisation Docker. Cette technique rend les applications plus légères, occupant ainsi moins d’espace. Ainsi, grâce à la conteneurisation, un serveur peut héberger 
+10 à 100 fois plus d’applications qu’avec les machines virtuelles.
+
+Utilisation de docker en quelques commandes : 
+
+ - La liste des conteneurs actifs est visible avec la commande docker ps:
+# >docker ps
+ - La commande docker run <nom_image> nous permet de créer et de démarrer un conteneur sur la base d’une image.
+
+Ici, nous instancions un conteneur nommé mysql-container, basé sur l’image mysql, et dont on définit la variable d’environnement MYSQL_ROOT_PASSWORD à thisIsAPassword :
+
+# >docker run --name mysql-container -e MYSQL ROOT PASSWORD=thisIsAPassword -d mysql:latest
+
+ - Nous pouvons à tout moment arrêter un conteneur grâce à la commande 
+# >docker stop <id_du_conteneur>.
+
+ - Pour afficher la liste de tous les conteneurs, même ceux éteints, le paramètre -a doit rentrer en jeu : 
+# >docker ps -a
+
+ - Nous avons la possibilité de redémarrer le conteneur avec 
+# >docker restart <id_conteneur>
+
+ -Nous pouvons également le supprimer complètement, lui et son contexte, avec la commande :
+# >docker rm <id_conteneur>
+
+ D'autres commandes utiles :
+
+FROM # Pour choisir l'image sur laquelle on se base, toujours en premier
+
+RUN # Permet d'exécuter une commande
+
+CMD # Commande exécutée au démarrage du conteneur par défaut
+
+EXPOSE # Ouvre un port
+
+ENV # Permet d'éditer des variables d'environnement
+
+ARG # Un peu comme ENV, mais seulement le temps de la construction de l'image
+
+COPY # Permet de copier un fichier ou répertoire de l'hôte vers l'image
+
+ADD # Permet de copier un fichier de l'hôte ou depuis une URL vers l'image, permet également de décompresser une archive tar
+
+LABEL # Des métadonnées utiles pour certains logiciels de gestion de conteneurs, comme rancher ou swarm, ou tout simplement pour mettre des informations sur l'image.
+
+ENTRYPOINT # Commande exécutée au démarrage du conteneur, non modifiable, utilisée pour package une commande
+
+VOLUME # Crée une partition spécifique
+
+WORKDIR # Permet de choisir le répertoire de travail
+
+USER # Choisit l'utilisateur qui lance la commande du ENTRYPOINT ou du CMD
+
+ONBUILD # Crée un step qui sera exécuté seulement si notre image est choisie comme base
+
+HEALTHCHECK # Permet d'ajouter une commande pour vérifier le fonctionnement de votre conteneur
+
+STOPSIGNAL # permet de choisir le [signal](http://man7.org/linux/man-pages/man7/signal.7.html) qui sera envoyé au conteneur lorsque vous ferez un docker container stop
+
+
+
+ Le docker-compose
+
+Jusqu’à présent, nous nous sommes contentés de lancer des conteneurs par le biais du shell. Bien que cette opération ne soit pas compliquée à réaliser, vous conviendrez qu’elle peut s’avérer longue et 
+répétitive lorsque l’on possède plusieurs conteneurs avec différents paramètres. C’est là que le docker-compose.yml entre en jeu ! Il est une alternative aux commandes.
+
+
+
+
+Les bases de la sécurisation des conteneurs
+
+La liste suivante est un rappel de certains des problèmes de sécurité les plus courants rencontrés dans les conteneurs : 
+
+    - Les conteneurs sont construits à partir d'images, dont la provenance doit être soumise à des politiques strictes et qui doivent être automatiquement et régulièrement scannées.
+    - Un conteneur privilégié est autorisé à faire tout ce que l'hôte peut faire. Il est essentiel de mettre en œuvre le principe du moindre privilège à chaque étape en configurant correctement les pipelines 
+    CI/CD, car les attaques de chaîne logistique sont de plus en plus courantes. Des capacités plus fines permettent de réduire la surface d'attaque.
+    - Les restrictions de communication entre conteneurs et l'isolation du réseau de l'hôte peuvent être assez difficiles à gérer, mais les conteneurs vivant sur le même réseau (comme la plupart des 
+    configurations par défaut) facilitent les mouvements latéraux.
+    - Les ressources telles que les processeurs, la mémoire, le nombre de processus lancés ou exécutés en parallèle dans un conteneur peuvent également être limitées. C'est une bonne chose pour prévenir les 
+    attaques telles que les fork bombs et l'injection de code à distance.
+    Les conteneurs sont faciles à utiliser comme vecteur pour infiltrer l'hôte sous-jacent. Ce qui a été mentionné plus haut à propos de l'isolement du réseau hôte devrait être étendu autant que possible : espaces de noms d'utilisateurs et de processus isolés, systèmes de fichiers en lecture seule lorsque cela est possible.
+
+Les bases de la sécurisation de la virtualisation 
+
+	- Protéger le système d'exploitation invité 
+	- Désactiver les fonctionnalités inutiles
+	- Utiliser les modèles et la gestion basée sur des scripts
+	- Minimiser l'utilisation de la console de machine virtuelle 
+	- Activer le démarrage sécurisé UEFI 
+	- identifier les risques et les prévenir grâce à des éléments de sécurité pour un SI virtualisé comme IDS et IPS 
